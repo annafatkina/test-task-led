@@ -2,9 +2,9 @@
 
 ## TcpServer
 
-is a server associated with a LED. It processes and responses to clients requests 
-or prints an error to the command line if the given request can't be processed.
+is a server associated with a LED. It handles client's requests.
 After any change (any 'set' request) it reprints LED state to the command line.
+It uses async `boost::asio` operations and multithread request handling. 
 
 To run the server:
 
