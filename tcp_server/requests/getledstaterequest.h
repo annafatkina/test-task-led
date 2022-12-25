@@ -7,15 +7,14 @@
 
 class GetLedStateRequest : public Request
 {
+    // This class specifies 'get-led-state' request.
+
 public:
+    // Create 'GetLedStateRequest' object.
     GetLedStateRequest();
 
-    std::shared_ptr<Response> process() override {
-        auto state = LED::getLED()->getState();
-        std::shared_ptr<Response> resp = std::make_shared<GetLedStateResponse>(state);
-        resp->setStatus(Status::OK);
-        return resp;
-    }
+    // Return get-led-state success response.
+    std::shared_ptr<Response> process(std::shared_ptr<LED> led) override;
 };
 
 #endif // GETLEDSTATEREQUEST_H

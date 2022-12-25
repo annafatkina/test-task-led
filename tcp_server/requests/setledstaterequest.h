@@ -16,7 +16,8 @@ public:
     // Create 'SetLedStateRequest' object with the specified 'state'
     explicit SetLedStateRequest(State state);
 
-    std::shared_ptr<Response> process() override;
+    // Return set-led-state success response.
+    std::shared_ptr<Response> process(std::shared_ptr<LED> led) override;
 };
 
 #endif // SETLEDSTATEREQUEST_H

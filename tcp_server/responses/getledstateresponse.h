@@ -6,27 +6,18 @@
 
 class GetLedStateResponse : public Response
 {
+    // This class specifies 'get-led-state' response.
+
     State state_;
 public:
+    // NOT IMPLEMENTED
     GetLedStateResponse() = delete;
 
-    GetLedStateResponse(State state) : state_(state) {}
+    // Create 'GetLedStateResponse' object with the specified 'state'.
+    GetLedStateResponse(State state);
 
-    std::string serialize() override {
-        std::string result;
-
-        if (status_ == Status::OK) {
-            result = "OK " + stateToString(state_);
-        } else {
-            result = "FAILED";
-        }
-
-        if (!error_.empty()) {
-            result += " " + error_;
-        }
-
-        return result;
-    }
+    // Return the serialized get-led-state response.
+    std::string serialize() const override;
 };
 
 #endif // GETLEDSTATERESPONSE_H

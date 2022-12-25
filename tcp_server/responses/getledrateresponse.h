@@ -5,26 +5,18 @@
 
 class GetLedRateResponse : public Response
 {
+    // This class specifies 'get-led-rate' response.
+
     float rate_;
 public:
+    // NOT IMPLEMENTED
     GetLedRateResponse() = delete;
-    GetLedRateResponse(float rate) : rate_(rate) {}
 
-    std::string serialize() override {
-        std::string result;
+    // Create 'GetLedRateResponse' with the specified 'rate'.
+    GetLedRateResponse(float rate);
 
-        if (status_ == Status::OK) {
-            result = "OK " + std::to_string(rate_);
-        } else {
-            result = "FAILED";
-        }
-
-        if (!error_.empty()) {
-            result += " " + error_;
-        }
-
-        return result;
-    }
+    // Return the serialized get-led-rate response.
+    std::string serialize() const override;
 };
 
 #endif // GETLEDRATERESPONSE_H

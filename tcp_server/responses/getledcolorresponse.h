@@ -12,7 +12,7 @@ class GetLedColorResponse : public Response
 public:
     GetLedColorResponse() = delete;
     GetLedColorResponse(Color color) : color_(color) {}
-    std::string serialize() override {
+    std::string serialize() const override {
         std::string result;
 
         if (status_ == Status::OK) {

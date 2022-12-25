@@ -10,11 +10,15 @@
 
 class RequestProcessor
 {
+    // This class provides a mechanism to process request.
 public:
-    RequestProcessor();
+    // NOT IMPLEMENTED
+    RequestProcessor() = delete;
 
-    std::shared_ptr<Response> process(std::shared_ptr<Request> request) {
-        return request->process();
+    // Return a response to the specified 'request'.
+    static std::shared_ptr<Response> process(std::shared_ptr<LED> led,
+                                             std::shared_ptr<Request> request) {
+        return request->process(led);
     }
 };
 

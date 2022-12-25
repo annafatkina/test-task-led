@@ -7,15 +7,13 @@
 
 class GetLedRateRequest : public Request
 {
+    // This class specifies 'get-led-rate <rate>' request.
 public:
+    // Create 'GetLedRateRequest' request.
     GetLedRateRequest();
 
-    std::shared_ptr<Response> process() override {
-        float rate = LED::getLED()->getRate();
-        std::shared_ptr<Response> resp = std::make_shared<GetLedRateResponse>(rate);
-        resp->setStatus(Status::OK);
-        return resp;
-    }
+    // Set LED rate and return success response.
+    std::shared_ptr<Response> process(std::shared_ptr<LED> led) override;
 };
 
 #endif // GETLEDRATEREQUEST_H

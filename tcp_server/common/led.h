@@ -15,8 +15,11 @@ enum class State
     ON
 };
 
+// Return the string representation of the specified 'state'.
 std::string stateToString(State state);
 
+// Return the state represented in the specified 'state'.  Throw the runtime
+// error if there is no conversion to 'State' object.
 State stringToState(std::string state);
 
 enum class Color {
@@ -25,68 +28,51 @@ enum class Color {
     BLUE
 };
 
+// Return the string representation of the specified 'color'.
 std::string colorToString(Color color);
 
+// Return the color represented in the specified 'state'.  Throw the runtime
+// error if there is no conversion to 'Color' object.
 Color stringToColor(std::string color);
 
 class LED {
+    // This class represents a LED.
 
 protected:
     State state_;
     Color color_;
     float rate_;
 
-    // add mutex
-    static LED* led_;
-
-    LED()
-      : state_(State::OFF)
-      , color_(Color::RED)
-      , rate_(0) {}
-
 public:
-    static LED* getLED();
+    // Create 'LED' object.
+    LED();
 
-    //~LED() {
-        //delete led_;
-    //}
+    // Delete this object
+    ~LED();
 
-    void setColor(Color color) {
-        // todo thread safety
-        color_ = color;
-        reprintOptions();
-    }
+    // Set LED color by the specified 'color'.
+    void setColor(Color color);
 
-    void setState(State state) {
-        state_ = state;
-        reprintOptions();
-    }
+    // Set LED state by the specified 'state'.
+    void setState(State state);
 
-    void setRate(float rate) {
-        rate_ = rate;
-        reprintOptions();
-    }
+    // Set LED rate by the specified 'rate'.
+    void setRate(float rate);
 
-    Color getColor() const {
-        return color_;
-    }
+    // Return LED color.
+    Color getColor() const;
 
-    State getState() const {
-        return state_;
-    }
+    // Return LED state.
+    State getState() const;
 
-    float getRate() const {
-        return rate_;
-    }
+    // Return LED rate.
+    float getRate() const;
 
-    void printOptions() const {
-        printf(ANSI_COLOR_YELLOW ">> State: %s\n>> Color: %s\n>> Rate: %f\n" ANSI_COLOR_RESET,
-               stateToString(state_).c_str(), colorToString(color_).c_str(), rate_);
-    }
-    void reprintOptions() const {
-        printf("\033[A\33[2KT\r\033[A\33[2KT\r\033[A\33[2KT\r");
-        printOptions();
-    }
+    // Print all the LED options to cout.
+    void printOptions() const;
+
+    // Replace last cmd lines with printed LED options.
+    void reprintOptions() const;
 };
 
 #endif // LED_H

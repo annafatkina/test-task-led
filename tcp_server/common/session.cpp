@@ -30,7 +30,7 @@ void Session::do_read()
         std::cerr << "Error while reading data from client:\n\t" << ec
                   << "\nfor session with session id " << sessionId_
                   << ". Closing this session."<< std::endl;
-        LED::getLED()->printOptions();
+        led_->printOptions();
         return;
     }
   };
@@ -59,12 +59,12 @@ void Session::handle() {
 
         try {
           std::shared_ptr<Request> request = Deserializer::deserialize(s);
-          resp = requestProcessor.process(request);
+          resp = RequestProcessor::process(led_, request);
 
         } catch (std::runtime_error& e){
             printf("\033[A\33[2KT\r\033[A\33[2KT\r\033[A\33[2KT\r");
             std::cerr << "Error: " << e.what();
-            LED::getLED()->printOptions();
+            led_->printOptions();
             resp = std::make_shared<ErrorResponse>();
         }
 
@@ -72,24 +72,30 @@ void Session::handle() {
 }
 
 // public
-Session::Session(Tcp::socket socket, int sessionId)
+Session::Session(Tcp::socket socket, int sessionId, std::shared_ptr<LED> led)
     : socket_(std::move(socket))
     , sessionId_(sessionId)
     , buffer(1024)
-    , requestProcessor()
+    , led_(led)
   {
   }
 
 Session::~Session() {
     printf("\033[A\33[2KT\r\033[A\33[2KT\r\033[A\33[2KT\r");
-    std::cout << "Session with session id " << sessionId_ << " closed." << std::endl;
-    LED::getLED()->printOptions();
+    std::cout << "Session with session id " << sessionId_ << " closed."
+              << std::endl;
+    led_->printOptions();
 }
 
 void Session::start()
 {
-    printf("\033[A\33[2KT\r\033[A\33[2KT\r\033[A\33[2KT\r");
-    std::cout << "Session with session id " << sessionId_ << " started." << std::endl;
-    LED::getLED()->printOptions();
+    if(sessionId_ > 0) {
+        // We don't want to clean cmd for the first session as there was no
+        // data printed yet
+        printf("\033[A\33[2KT\r\033[A\33[2KT\r\033[A\33[2KT\r");
+    }
+    std::cout << "Session with session id " << sessionId_ << " started."
+              << std::endl;
+    led_->printOptions();
     do_read();
 }

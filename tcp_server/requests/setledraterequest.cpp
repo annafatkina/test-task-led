@@ -13,8 +13,8 @@ SetLedRateRequest::SetLedRateRequest(float rate)
     }
 }
 
-std::shared_ptr<Response> SetLedRateRequest::process() {
-    LED::getLED()->setRate(rate_);
+std::shared_ptr<Response> SetLedRateRequest::process(std::shared_ptr<LED> led) {
+    led->setRate(rate_);
     std::shared_ptr<Response> resp = std::make_shared<SetterResponse>();
     resp->setStatus(Status::OK);
     return resp;

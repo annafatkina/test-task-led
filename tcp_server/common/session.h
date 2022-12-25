@@ -4,6 +4,7 @@
 #include "boost/asio.hpp"
 #include "led.h"
 #include "requestprocessor.h"
+#include <memory>
 
 class Session : public std::enable_shared_from_this<Session>
 {
@@ -14,7 +15,7 @@ class Session : public std::enable_shared_from_this<Session>
     Tcp::socket            socket_;
     int                    sessionId_;
     boost::asio::streambuf buffer;
-    RequestProcessor       requestProcessor;
+    std::shared_ptr<LED>   led_;
 
     // PRIVATE METHODS
 
@@ -36,7 +37,7 @@ class Session : public std::enable_shared_from_this<Session>
 
 public:
     // Create 'Session' object with the specified 'socket' and 'sessionId'.
-    Session(Tcp::socket socket, int sessionId);
+    Session(Tcp::socket socket, int sessionId, std::shared_ptr<LED> led);
 
     // Destroy this object.
     ~Session();

@@ -1,6 +1,6 @@
 #include "tcpserver.h"
 #include "session.h"
-
+#include <iostream>
 
 void TcpServer::do_accept()
 {
@@ -9,7 +9,7 @@ void TcpServer::do_accept()
       {
         if (!ec)
         {
-          std::make_shared<Session>(std::move(socket), sessionCounter_)->start();
+          std::make_shared<Session>(std::move(socket), sessionCounter_, led_)->start();
           sessionCounter_++;
         }
 
@@ -21,5 +21,6 @@ TcpServer::TcpServer(Context& io_context, short port)
     : acceptor_(io_context, Tcp::endpoint(Tcp::v4(), port))
     , sessionCounter_(0)
   {
+    led_ = std::make_shared<LED>();
     do_accept();
   }

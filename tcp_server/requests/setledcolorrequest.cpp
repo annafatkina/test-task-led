@@ -7,11 +7,11 @@ SetLedColorRequest::SetLedColorRequest(Color color)
 {
 }
 
-std::shared_ptr<Response> SetLedColorRequest::process() {
+std::shared_ptr<Response> SetLedColorRequest::process(std::shared_ptr<LED> led) {
     std::shared_ptr<Response> response
             = std::make_shared<SetterResponse>();
 
-    LED::getLED()->setColor(color_);
+    led->setColor(color_);
     response->setStatus(Status::OK);
     return response;
 }

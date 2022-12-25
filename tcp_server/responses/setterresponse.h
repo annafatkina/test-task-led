@@ -5,24 +5,13 @@
 
 class SetterResponse : public Response
 {
+    // This class specifies 'set-led-<...>' response.
 public:
+    // Create 'SetterResponse' object.
     SetterResponse();
 
-    std::string serialize() override {
-        std::string result;
-
-        if (status_ == Status::OK) {
-            result = "OK";
-        } else {
-            result = "FAILED";
-        }
-
-        if (!error_.empty()) {
-            result += " " + error_;
-        }
-
-        return result;
-    }
+    // Return the serialized set-led-<...> response.
+    std::string serialize() const override;
 };
 
 #endif // SETTERRESPONSE_H

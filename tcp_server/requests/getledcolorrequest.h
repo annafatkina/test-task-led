@@ -9,15 +9,13 @@
 
 class GetLedColorRequest : public Request
 {
+    // This class specifies 'get-led-color <color>' request.
 public:
+    // Create 'GetLedColorRequest' object.
     GetLedColorRequest();
 
-    std::shared_ptr<Response> process() override {
-        auto color = LED::getLED()->getColor();
-        std::shared_ptr<Response> resp = std::make_shared<GetLedColorResponse>(color);
-        resp->setStatus(Status::OK);
-        return resp;
-    }
+    // Set LED color and return the success response
+    std::shared_ptr<Response> process(std::shared_ptr<LED> led) override;
 };
 
 #endif // GETLEDCOLORREQUEST_H

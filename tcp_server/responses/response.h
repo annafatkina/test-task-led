@@ -11,18 +11,29 @@ enum class Status {
 class Response
 {
     // This class is an interface for all the types of response.
+
 protected:
-    Status status_;
+    Status      status_;
     std::string error_;
 
 public:
-    Response() {}
+    // Create 'Response' object.
+    Response();
 
-    void setError(const std::string& error) { error_ = error; }
-    void setStatus(Status status) {status_ = status; }
-    virtual std::string serialize() = 0;
-
+    // Destroy this onject.
     virtual ~Response() {}
+
+    // Return the serialized response.
+    virtual std::string serialize() const = 0;
+
+    // Set this respose error by the specified 'error'.
+    void setError(const std::string& error);
+
+    // Set this response status by the specified 'status'.
+    void setStatus(Status status);
+
+    // Return this response error.
+    std::string getError() const;
 };
 
 #endif // RESPONSE_H

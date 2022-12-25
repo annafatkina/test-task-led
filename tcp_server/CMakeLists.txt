@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.5)
 
 project(tcp_server LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 FIND_PACKAGE( Boost 1.40 COMPONENTS system REQUIRED )
@@ -28,6 +28,7 @@ set(RESPONSES
     responses/errorresponse.h
     responses/getledstateresponse.h
     responses/getledrateresponse.h
+    responses/response.cpp
     responses/setterresponse.cpp
     responses/errorresponse.cpp
     responses/getledstateresponse.cpp
@@ -42,7 +43,6 @@ add_executable(tcp_server
     common/tcpserver.h
     common/session.cpp
     common/session.h
-    common/requestprocessor.cpp
     common/requestprocessor.h
     common/led.cpp
     common/led.h

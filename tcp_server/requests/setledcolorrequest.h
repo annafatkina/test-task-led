@@ -16,7 +16,8 @@ public:
     // Create 'SetLedColorRequest' object with the specified 'color'
     explicit SetLedColorRequest(Color color);
 
-    std::shared_ptr<Response> process() override;
+    // Return set-led-color success response.
+    std::shared_ptr<Response> process(std::shared_ptr<LED> led) override;
 };
 
 #endif // SETLEDCOLORREQUEST_H
