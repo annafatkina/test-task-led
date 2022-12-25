@@ -35,6 +35,10 @@ class Session : public std::enable_shared_from_this<Session>
     // Process the received data.
     void handle();
 
+    // Print 'data' to the command line and reprint LED state the way to leave
+    // it on the last lines.
+    void logData(const std::string& data, bool reprint = true);
+
 public:
     // Create 'Session' object with the specified 'socket' and 'sessionId'.
     Session(Tcp::socket socket, int sessionId, std::shared_ptr<LED> led);

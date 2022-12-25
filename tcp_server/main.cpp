@@ -17,11 +17,9 @@ int main(int argc, char* argv[])
           return 1;
         }
 
-        boost::asio::io_context io_context;
+        TcpServer s(std::atoi(argv[1]));
 
-        TcpServer s(io_context, std::atoi(argv[1]));
-
-        io_context.run();
+        s.run();
       }
       catch (std::exception& e)
       {

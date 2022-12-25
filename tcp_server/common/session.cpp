@@ -26,11 +26,9 @@ void Session::do_read()
     {
       handle();
     } else {
-        printf("\033[A\33[2KT\r\033[A\33[2KT\r\033[A\33[2KT\r");
-        std::cerr << "Error while reading data from client:\n\t" << ec
-                  << "\nfor session with session id " << sessionId_
-                  << ". Closing this session."<< std::endl;
-        led_->printOptions();
+        logData("Error while reading data from client:\n\t" +  ec.message() +
+                "\nfor session with session id " + std::to_string(sessionId_)
+                + ". Closing this session.");
         return;
     }
   };
@@ -60,15 +58,20 @@ void Session::handle() {
         try {
           std::shared_ptr<Request> request = Deserializer::deserialize(s);
           resp = RequestProcessor::process(led_, request);
-
         } catch (std::runtime_error& e){
-            printf("\033[A\33[2KT\r\033[A\33[2KT\r\033[A\33[2KT\r");
-            std::cerr << "Error: " << e.what();
-            led_->printOptions();
+            logData("Error: " + std::string(e.what()));
             resp = std::make_shared<ErrorResponse>();
         }
 
         writeToBuffer(resp->serialize());
+}
+
+void Session::logData(const std::string& data, bool reprint) {
+    if(reprint) {
+        printf("\033[A\33[2KT\r\033[A\33[2KT\r\033[A\33[2KT\r");
+    }
+    std::cout << data << std::endl;
+    led_->printOptions();
 }
 
 // public
@@ -81,21 +84,13 @@ Session::Session(Tcp::socket socket, int sessionId, std::shared_ptr<LED> led)
   }
 
 Session::~Session() {
-    printf("\033[A\33[2KT\r\033[A\33[2KT\r\033[A\33[2KT\r");
-    std::cout << "Session with session id " << sessionId_ << " closed."
-              << std::endl;
-    led_->printOptions();
+    logData("Session with session id " + std::to_string(sessionId_) + " closed.");
 }
 
 void Session::start()
 {
-    if(sessionId_ > 0) {
-        // We don't want to clean cmd for the first session as there was no
-        // data printed yet
-        printf("\033[A\33[2KT\r\033[A\33[2KT\r\033[A\33[2KT\r");
-    }
-    std::cout << "Session with session id " << sessionId_ << " started."
-              << std::endl;
-    led_->printOptions();
+    bool reprint = true;
+    if (sessionId_ == 0) reprint = false;
+    logData("Session with session id " + std::to_string(sessionId_) + " started.", reprint);
     do_read();
 }

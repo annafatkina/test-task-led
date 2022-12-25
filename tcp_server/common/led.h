@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <stdexcept>
 #include <memory>
+#include <shared_mutex>
 
 #define ANSI_COLOR_YELLOW  "\x1b[33m"
 #define ANSI_COLOR_RESET   "\x1b[0m"
@@ -43,6 +44,16 @@ protected:
     Color color_;
     float rate_;
 
+    mutable std::shared_mutex mutex_;
+
+    // CLASS METHODS
+
+    // Print all the LED options to cout.
+    void printOptionsLocked() const;
+
+    // Replace last cmd lines with printed LED options.
+    void reprintOptions() const;
+
 public:
     // Create 'LED' object.
     LED();
@@ -70,9 +81,6 @@ public:
 
     // Print all the LED options to cout.
     void printOptions() const;
-
-    // Replace last cmd lines with printed LED options.
-    void reprintOptions() const;
 };
 
 #endif // LED_H
